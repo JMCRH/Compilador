@@ -1,0 +1,2 @@
+
+				bandera = GIC_OperacionesAritmeticas();

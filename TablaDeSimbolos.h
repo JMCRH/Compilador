@@ -50,6 +50,7 @@ void TipoDatoId()
 				printf("1. Numero Entero \n");
 				printf("2. Numero Decimal \n");
 				printf("Digita la opcion: ");
+				fflush(stdin);
 				scanf("%i",&numAux);
 				printf("Numero leido: %i\n",numAux);
 								

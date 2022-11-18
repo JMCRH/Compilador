@@ -7,10 +7,21 @@
 //Nombre del archivo de lectura
 const char* filename = "revision.txt";
 
+void LeerCadena(char Cadena[50])
+{
+	FILE *CrearArchivo;
+	//Busca el archivo de lectura, si no existe, crea uno nuevo
+	CrearArchivo = fopen(filename,"w");
+	//Escritura de la cadena ingresada en el archivo
+	fputs(Cadena,CrearArchivo);
+	//Cierre del archivo
+	fclose(CrearArchivo);
+}
+
 int Analizar()
 {
 	//system("cls");
-	printf("\n\t------ANALIZANDO ARCHIVO------\n\n");
+	printf("\n     ------ANALIZANDO LA CADENA INGRESADA------\n");
 	//Puntero para el archivo
     FILE *ArchivoLeido;
     //apertura del archivo en modo lectura
@@ -22,7 +33,7 @@ int Analizar()
 
     if (!ArchivoLeido) {
     	//mensaje de error
-        perror("Error en la apertura del archivo");
+        perror("OCURRIO UN ERROR AL LEER LA CADENA");
         /*Si no se logra abrie el archivo de texto entonces
 		el programa vuelve al menu principal*/
 		return 0;
@@ -33,6 +44,8 @@ int Analizar()
     //Si ocurre un error al verificar el estado, se interrumpe el programa.
     if (stat(filename, &sb) == -1) {
         perror("stat");
+		//Si no se logra abrie el archivo de texto entonces se elimina
+		remove(filename);
         exit(EXIT_FAILURE);
     }
 
@@ -276,7 +289,10 @@ int Analizar()
 				printf(": es un ERROR\n");					
 		}
 	}
+	//Al finalizar el analisis se cierra el archivo y se elimina
     fclose(ArchivoLeido);
-    printf("\n\t------ANALISIS COMPLETADO------\n\n");
+	remove(filename);
+	printf("\t   ||||||||| 100%% ||||||||||\n");
+    printf("\t------ANALISIS COMPLETADO------\n");
     return 1;
 }

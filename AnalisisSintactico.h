@@ -20,38 +20,57 @@ int GIC_OperacionesAritmeticas()
 	char Lex[20];
 	char Tip[3];
 	int num = 1;
-	char Derivacion[30], Sustitucion[30];
+	char Derivacion[50], Sustitucion[50];
 	int bandera = 1;
 	int longitud = LongitudTS();
 	
 	
-	//Consulta la tabla de simbolos para saber qué lexema se encuentra en la posición num
+	//Consulta la tabla de simbolos para saber qué lexema se encuentra en la posición num, se espera un 'ID'
 	ConsultarTipTok(Tip,num);
-	//Si es un número entero o decimal, entoncesguarda el lexema en la derivación como num
-	if(strcmp(Tip,"NE") == 0 || strcmp(Tip,"ND") == 0)
+
+	//El primer lexema debe ser un 'ID'
+	if(num == 1)
 	{
-		//S->num
-		strcpy(Derivacion,"S->num");
-		strcpy(Sustitucion,"num");
-		printf("S ");
-	}
-	//Si no es un numero, pero es un ID, entonces guarda el lexema en la derivación como id
-	else if(strcmp(Tip,"ID") == 0)
-	{
-		//S->id
-		strcpy(Derivacion,"S->id");
-		strcpy(Sustitucion,"id");
-		printf("S");
-	}
-	//Si no es ninguno de los anteriores, entonces es un error y no continua con el análisis
-	else
-	{
-		printf("Error de sintaxis\n\n");
-		return 0;
+		//Si el primer lexema es un 'ID'
+		if(strcmp(Tip,"ID") == 0)
+		{
+			//S->id
+			strcpy(Derivacion,"S->id");
+			strcpy(Sustitucion,"id");
+
+			//Si el primer lexema es un 'ID', se aumenta el indice y consulta el siguiente lexema
+			num++;
+			ConsultarTipTok(Tip,num);
+			//Se espera que el siguiente lexema sea el signo de asignacion
+			if (strcmp(Tip,"AS") == 0)
+			{
+				printf("S");
+				strcpy(Derivacion,Sustitucion);
+				strcat(Derivacion,"AS");
+				ConsultarLexema(Lex,num);
+				strcat(Sustitucion,Lex);
+				printf(" -> %s -> %sS \n",Derivacion, Sustitucion);
+			}
+			//Si no es el signo de asignacion, entonces se tiene un error de sintaxis
+			else
+			{
+				printf("Error de sintaxis, se esperaba un signo de asignacion. \n\n");
+				bandera = 0;
+			}
+		}
+		//Si el primer lexema no es un ID, entonces se tiene un error de sintaxis
+		else
+		{
+			printf("Error de sintaxis, se esperaba un ID en la asignacion. \n\n");
+			bandera = 0;
+		}
 	}
 	
-	//Si se encontró un número o un ID, entonces se procede a verificar si es una operación aritmética
-	//Si bandera == 1, entonces no hay errores en sintaxis, si bandera == 0, entonces hay errores en sintaxis y finaliza
+	/*Si se encontró un ID seguido del signo de asignación, entonces se procede a 
+	verificar si es una operación aritmética lo que le precede*/
+
+	//Si bandera == 1, entonces no hay errores en sintaxis
+	//si bandera == 0 entonces hay errores en sintaxis y finaliza
 	while(bandera == 1)
 	{
 		num = num + 1;
@@ -67,6 +86,7 @@ int GIC_OperacionesAritmeticas()
 			printf("\n LA CADENA ES VALIDA\n\n");
 			bandera = 0;
 		}
+		//Si se trata de una longitud mayor a la tabla de simbolos y el indice es un numero par, entonces hay un error
 		else if(num > longitud && (num-1) % 2 == 0)
 		{
 			printf(" -> %s\n",Sustitucion);
@@ -74,8 +94,8 @@ int GIC_OperacionesAritmeticas()
 			bandera = 0;
 		}
 	}
-	return 1;
-	
+	//Si la badera es 1, no hubo errores, si es 0, hubo errores
+	if(bandera == 1){return 1;}	else{return 0;}
 }
 
 //fUNCIÓN QUE VERIFICA LAS DERIVACIONES Y REALIZA LAS SUSTITUCIONES
