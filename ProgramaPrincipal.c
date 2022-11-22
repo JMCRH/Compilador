@@ -3,6 +3,7 @@
 #include "TablaDeSimbolos.h"
 #include "AnalisisLexico.h"
 #include "AnalisisSintactico.h"
+#include "AnalisisSemantico.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +17,8 @@ int main(int argc, char *argv[])
 		printf("2.- Mostrar Tabla de Simbolos.\n");
 		printf("3.- Analizar sintaxis.\n");
 		printf("4.- Ingresar tipo de dato.\n");
-		printf("5.- Salir.\n");
+		printf("5.- Validar tipos de datos.\n");
+		printf("6.- Salir.\n");
 		fflush(stdin);
 		printf("Digite el numero de la opcion deseada: ");
 		scanf("%d", &op);
@@ -40,9 +42,12 @@ int main(int argc, char *argv[])
 				TipoDatoId();
 				break;
 			case 5:
+				VerificarTipos();
+				break;
+			case 6:
 				exit(EXIT_SUCCESS);
 				remove("revision.txt");
 				break;
 		}
-	} while (op!=5 && bandera != 0);
+	} while (op!=6 && bandera != 0);
 }

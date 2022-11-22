@@ -11,6 +11,7 @@ void Imprimir();
 void ConsultarLexema(char Lex[20], int num);
 void ConsultarTipTok(char Tip[3], int num);
 int LongitudTS();
+void ConsultarTipos(char Tipo[4], int num);
 
 
 //estructura para la tabla de simbolos
@@ -186,6 +187,44 @@ void ConsultarTipTok(char Tip[3], int num)
 	}
 }
 
+
+//FUNCIÓN PARA CONSULTAR TIPOS DE DATOS
+void ConsultarTipos(char Tipo[4], int num)
+{
+	//Limpiar la consola de salida
+	//system("cls");
+	aux = ini;
+	if (ini == NULL)
+	{
+		printf("\n-------NO EXISTEN ELEMENTOS EN LA TABLA DE SIMBOLOS------\n\n");		
+	}
+	else
+	{
+		while(aux != NULL)
+		{
+			if (aux->index == num)
+			{
+				//Devuelve el lexema
+				if(strcmp(aux -> TipoId,"NumE")==0)
+				{
+					strcpy(Tipo,"NumE");
+					break;
+				}
+				else if(strcmp(aux -> Lexema,"NumD")==0)
+				{
+					strcpy(Tipo,"NumD");
+					break;
+				}
+			}
+			else
+			{
+				//Pasar al siguienyte elemento de la tabla de simbolos
+				aux = aux->Sig;
+			}
+			
+		}
+	}
+}
 
 
 #endif	//TABLA_SIMBOLOS

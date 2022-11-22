@@ -1,2 +1,1 @@
-
-				bandera = GIC_OperacionesAritmeticas();
+VerificarTipos

@@ -84,7 +84,7 @@ int GIC_OperacionesAritmeticas()
 		{
 			printf(" -> %s\n",Sustitucion);
 			printf("\n LA CADENA ES VALIDA\n\n");
-			bandera = 0;
+			bandera = 2;
 		}
 		//Si se trata de una longitud mayor a la tabla de simbolos y el indice es un numero par, entonces hay un error
 		else if(num > longitud && (num-1) % 2 == 0)
@@ -95,7 +95,15 @@ int GIC_OperacionesAritmeticas()
 		}
 	}
 	//Si la badera es 1, no hubo errores, si es 0, hubo errores
-	if(bandera == 1){return 1;}	else{return 0;}
+	if(bandera != 0)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+	
 }
 
 //fUNCIÓN QUE VERIFICA LAS DERIVACIONES Y REALIZA LAS SUSTITUCIONES
