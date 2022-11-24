@@ -5,7 +5,48 @@
 #include <stdbool.h>
 
 //Definición de funciones prototipo
-//void VerificarTipos();
+void AsignarValores();
+void ConsultarTiposDeDatos(char Tipo[4], int num);
+void TipoDatoId();
+void VerificarTipos();
+
+//FUNCIÓN PARA CONSULTAR TIPOS DE DATOS
+void ConsultarTiposDeDatos(char Tipo[4], int num)
+{
+	//Limpiar la consola de salida
+	//system("cls");
+	aux = ini;
+	if (ini == NULL)
+	{
+		printf("\n-------NO EXISTEN ELEMENTOS EN LA TABLA DE SIMBOLOS------\n\n");		
+	}
+	else
+	{
+		while(aux != NULL)
+		{
+			if (aux->index == num)
+			{
+				//Devuelve el tipo de dato
+				if(strcmp(aux -> TipoId,"NumE")==0)
+				{
+					strcpy(Tipo,"NumE");
+					break;
+				}
+				else if(strcmp(aux -> TipoId,"NumD")==0)
+				{
+					strcpy(Tipo,"NumD");
+					break;
+				}
+			}
+			else
+			{
+				//Pasar al siguienyte elemento de la tabla de simbolos
+				aux = aux->Sig;
+			}
+			
+		}
+	}
+}
 
 //FUNCIÓN PARA AGREGAR TIPO DE DATO DE LOS IDENTIFICADORES
 void TipoDatoId()
@@ -78,8 +119,9 @@ void VerificarTipos()
     bool Error = false;
 
     //Se obtiene el tipo de dato de la variable o ID principal
-    ConsultarTipos(TipoPrincipal, Index);
+    ConsultarTiposDeDatos(TipoPrincipal,Index);
     Index += 2;
+    printf("Tipo de dato principal: %s\n",TipoPrincipal);
 
     //Si el ID principal es un Numero Entero
     if (strcmp(TipoPrincipal,"NumE")==0)
@@ -87,7 +129,7 @@ void VerificarTipos()
         //Consulta el tipo de dato de los siguiente 
         while (Index <= Longitud)
         {
-            ConsultarTipos(Tipo, Index);
+            ConsultarTiposDeDatos(Tipo, Index);
             //Si el tipo de los demás elementos es diferenete a Numero Entero, se marca un error
             if (strcmp(TipoPrincipal,Tipo) != 0)
             {
@@ -115,9 +157,41 @@ void VerificarTipos()
     {
         printf("=== LOS TIPOS DE DATOS SON VALIDOS ===\n");
     }
-    
-    
-    
-    
-    
+}
+
+//FUNCIÓN QUE SOLICITA EL VALOR DE LOS IDENTIFICADORES
+void AsignarValores()
+{
+    int Index = 3;
+    int Longitud = LongitudTS();
+    aux = ini;
+
+    while(aux != NULL)
+    {
+        //Si el Indice es igual al Index, se inserta el dato
+        if(aux -> index == Index)
+        {
+            //Si se trata de un ID, se pregunta el valor del ID
+            if (strcmp(aux -> TipTok,"ID") == 0)
+            {
+                printf("Ingrese el valor del identificador '%s': ", aux -> Lexema);
+                fflush(stdin);
+                scanf("%s", aux -> ValorId);
+                Index += 1;
+            }
+            //Si no es un ID, se copia el lexema, asumiendo que es un Entero o un Decimal
+            else
+            {
+                strcpy(aux -> ValorId, aux -> Lexema);
+                Index += 1;
+            }
+            //avanza al siguiente elemento 
+            aux = aux->Sig;            
+        }
+        else
+        {
+            aux = aux->Sig;
+        }
+    }
+ 
 }

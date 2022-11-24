@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
 		printf("3.- Analizar sintaxis.\n");
 		printf("4.- Ingresar tipo de dato.\n");
 		printf("5.- Validar tipos de datos.\n");
-		printf("6.- Salir.\n");
+		printf("6.- Ingresar el valor de los identificadores. \n");
+		printf("7.- Salir.\n");
 		fflush(stdin);
 		printf("Digite el numero de la opcion deseada: ");
 		scanf("%d", &op);
@@ -45,9 +46,12 @@ int main(int argc, char *argv[])
 				VerificarTipos();
 				break;
 			case 6:
+				AsignarValores();
+				break;				
+			case 7:
 				exit(EXIT_SUCCESS);
 				remove("revision.txt");
 				break;
 		}
-	} while (op!=6 && bandera != 0);
+	} while (op!=7 && bandera != 0);
 }

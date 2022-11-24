@@ -21,7 +21,7 @@ struct TS
 	char TipTok [3];
 	int Indice;
 	char TipoId [4];
-	float ValorId;
+	char ValorId[5];
 	int index;
 	struct TS *Sig;
 };
@@ -210,7 +210,7 @@ void ConsultarTipos(char Tipo[4], int num)
 					strcpy(Tipo,"NumE");
 					break;
 				}
-				else if(strcmp(aux -> Lexema,"NumD")==0)
+				else if(strcmp(aux -> TipoId,"NumD")==0)
 				{
 					strcpy(Tipo,"NumD");
 					break;
