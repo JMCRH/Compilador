@@ -1,3 +1,9 @@
+/*	Las sigientes dos lineas y la última del archivo, son instrucciones que evitan la 
+	redefinición de las funciones y estructuras en caso de haber sido utilizadas con anterioridad
+*/
+#ifndef ANALISIS_LEXICO_H
+#define ANALISIS_LEXICO_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -296,3 +302,6 @@ int Analizar()
     printf("\t------ANALISIS COMPLETADO------\n");
     return 1;
 }
+
+
+#endif //ANALISIS_LEXICO_H

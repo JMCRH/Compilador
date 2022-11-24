@@ -1,3 +1,6 @@
+/*	Las sigientes dos lineas y la última del archivo, son instrucciones que evitan la 
+	redefinición de las funciones y estructuras en caso de haber sido utilizadas con anterioridad
+*/
 #ifndef TABLA_SIMBOLOS
 #define TABLA_SIMBOLOS
 
@@ -187,44 +190,6 @@ void ConsultarTipTok(char Tip[3], int num)
 	}
 }
 
-
-//FUNCIÓN PARA CONSULTAR TIPOS DE DATOS
-void ConsultarTipos(char Tipo[4], int num)
-{
-	//Limpiar la consola de salida
-	//system("cls");
-	aux = ini;
-	if (ini == NULL)
-	{
-		printf("\n-------NO EXISTEN ELEMENTOS EN LA TABLA DE SIMBOLOS------\n\n");		
-	}
-	else
-	{
-		while(aux != NULL)
-		{
-			if (aux->index == num)
-			{
-				//Devuelve el lexema
-				if(strcmp(aux -> TipoId,"NumE")==0)
-				{
-					strcpy(Tipo,"NumE");
-					break;
-				}
-				else if(strcmp(aux -> TipoId,"NumD")==0)
-				{
-					strcpy(Tipo,"NumD");
-					break;
-				}
-			}
-			else
-			{
-				//Pasar al siguienyte elemento de la tabla de simbolos
-				aux = aux->Sig;
-			}
-			
-		}
-	}
-}
 
 
 #endif	//TABLA_SIMBOLOS

@@ -1,3 +1,9 @@
+/*	Las sigientes dos lineas y la última del archivo, son instrucciones que evitan la 
+	redefinición de las funciones y estructuras en caso de haber sido utilizadas con anterioridad
+*/
+#ifndef ANALISIS_SEMANTICO_H
+#define ANALISIS_SEMANTICO_H
+
 #include "TablaDeSimbolos.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +14,7 @@
 void AsignarValores();
 void ConsultarTiposDeDatos(char Tipo[4], int num);
 void TipoDatoId();
-void VerificarTipos();
+int VerificarTipos();
 
 //FUNCIÓN PARA CONSULTAR TIPOS DE DATOS
 void ConsultarTiposDeDatos(char Tipo[4], int num)
@@ -27,11 +33,13 @@ void ConsultarTiposDeDatos(char Tipo[4], int num)
 			if (aux->index == num)
 			{
 				//Devuelve el tipo de dato
+                //Si es un Numero entero
 				if(strcmp(aux -> TipoId,"NumE")==0)
 				{
 					strcpy(Tipo,"NumE");
 					break;
 				}
+                //Si no es un entero pero es un numero decimal
 				else if(strcmp(aux -> TipoId,"NumD")==0)
 				{
 					strcpy(Tipo,"NumD");
@@ -85,12 +93,13 @@ void TipoDatoId()
 				printf("Tipo de dato aignado: %s\n\n", aux -> TipoId);
 				aux = aux->Sig;
 			}
-            //Si no es un ID, pero es un Numero Entero o Decimal, se asigna el tipo de dato correspondiente
+            //Si no es un ID, pero es un Numero Entero se asigna el tipo de dato correspondiente
 			else if(strcmp(aux -> TipTok,"NE"))
 			{
                 strcpy(aux -> TipoId,"NumE");
 				aux = aux->Sig;
 			}
+            //Si no es un ID, pero es un Numero Decimal se asigna el tipo de dato correspondiente
             else if(strcmp(aux -> TipTok,"ND"))
             {
                 strcpy(aux -> TipoId,"NumD");
@@ -110,42 +119,53 @@ void TipoDatoId()
 }
 
 //FUNCIÓN PARA VERIFICAR QUE LOS TIPOS DE DATOS DE LA OPERACIÓN SEAN VÁLIDOS
-void VerificarTipos()
+int VerificarTipos()
 {
     char TipoPrincipal[4];
     char Tipo[4];
     int Index = 1;
-    int Longitud = LongitudTS();
+    int Longitud = 0;
     bool Error = false;
 
     //Se obtiene el tipo de dato de la variable o ID principal
     ConsultarTiposDeDatos(TipoPrincipal,Index);
     Index += 2;
-    printf("Tipo de dato principal: %s\n",TipoPrincipal);
+    printf("_________________________________________\n");
 
     //Si el ID principal es un Numero Entero
     if (strcmp(TipoPrincipal,"NumE")==0)
     {
-        //Consulta el tipo de dato de los siguiente 
+        //Obtiene la longitud de la tabla de simbolos
+        Longitud = LongitudTS();
+        //Consulta el tipo de dato de los siguientes elementos de la tabla de simbolos 
         while (Index <= Longitud)
         {
             ConsultarTiposDeDatos(Tipo, Index);
             //Si el tipo de los demás elementos es diferenete a Numero Entero, se marca un error
-            if (strcmp(TipoPrincipal,Tipo) != 0)
+            if (strcmp(TipoPrincipal,Tipo)!=0)
             {
                 Error = true;
                 break;
             }
-            Index+= 2;           
+            Index ++;  
+
         }   
+        /*  Si Error es verdadero, significa que hay un error de tipos de datos en la operacion
+            recordando que no se permite el estrechamiento de datos, es decir, no se puede
+            asignar un valor decimal a una variable entera.
+        */
         if (Error == true)
         {
             printf("Error: Los tipos de datos de la operacion no son validos.\n");
             printf("No se permite el estrechamiento de tipos de datos.\n");
+            return 0;
         }
+        //Si Error no es verdadero, entonces se sabe que los tipos de datos son adecuados para operar
         else
         {
             printf("=== LOS TIPOS DE DATOS SON VALIDOS ===\n");
+            printf("_________________________________________\n");
+            return 1;
         }
         
     }
@@ -156,6 +176,8 @@ void VerificarTipos()
     else if (strcmp(TipoPrincipal,"NumD")==0)
     {
         printf("=== LOS TIPOS DE DATOS SON VALIDOS ===\n");
+        printf("_________________________________________\n");
+        return 1;
     }
 }
 
@@ -195,3 +217,6 @@ void AsignarValores()
     }
  
 }
+
+
+#endif //ANALISIS_SEMANTICO_H

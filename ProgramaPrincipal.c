@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 				TipoDatoId();
 				break;
 			case 5:
-				VerificarTipos();
+				bandera = VerificarTipos();
 				break;
 			case 6:
 				AsignarValores();

@@ -1,3 +1,9 @@
+/*	Las sigientes dos lineas y la última del archivo, son instrucciones que evitan la 
+	redefinición de las funciones y estructuras en caso de haber sido utilizadas con anterioridad
+*/
+#ifndef ANALISIS_SINTACTICO_H
+#define ANALISIS_SINTACTICO_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -167,3 +173,5 @@ int Derivaciones(int num, char Tip[3], char Lex[20], char Derivacion[30], char S
 		return 1;
 	}
 }
+
+#endif //ANALISIS_SINTACTICO_H
