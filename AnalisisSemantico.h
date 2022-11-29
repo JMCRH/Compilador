@@ -90,17 +90,17 @@ void TipoDatoId()
 					strcpy(aux ->TipoId,"NumD");
 				}
 				numAux = 0;
-				printf("Tipo de dato aignado: %s\n\n", aux -> TipoId);
+				printf("Tipo de dato asignado: %s\n\n", aux -> TipoId);
 				aux = aux->Sig;
 			}
             //Si no es un ID, pero es un Numero Entero se asigna el tipo de dato correspondiente
-			else if(strcmp(aux -> TipTok,"NE"))
+			else if(strcmp(aux -> TipTok,"NE")==0)
 			{
                 strcpy(aux -> TipoId,"NumE");
 				aux = aux->Sig;
 			}
             //Si no es un ID, pero es un Numero Decimal se asigna el tipo de dato correspondiente
-            else if(strcmp(aux -> TipTok,"ND"))
+            else if(strcmp(aux -> TipTok,"ND")==0)
             {
                 strcpy(aux -> TipoId,"NumD");
                 aux = aux->Sig;
@@ -109,10 +109,12 @@ void TipoDatoId()
             elemento de la tabla de simbolos. Se asume que es un operador*/
             else
             {
-                strcpy(aux -> TipoId," ");
+                strcpy(aux -> TipoId,"");
                 aux = aux->Sig;
             }
+            
 		}
+        printf("_________________________________________\n");
 	}
 	printf("Se ha ingresado el tipo de dato de los identificadores.\n");
 	printf("_________________________________________\n");
@@ -125,12 +127,11 @@ int VerificarTipos()
     char Tipo[4];
     int Index = 1;
     int Longitud = 0;
-    bool Error = false;
+    int Error = 1;
 
     //Se obtiene el tipo de dato de la variable o ID principal
     ConsultarTiposDeDatos(TipoPrincipal,Index);
-    Index += 2;
-    printf("_________________________________________\n");
+    Index = Index + 2;
 
     //Si el ID principal es un Numero Entero
     if (strcmp(TipoPrincipal,"NumE")==0)
@@ -142,22 +143,26 @@ int VerificarTipos()
         {
             ConsultarTiposDeDatos(Tipo, Index);
             //Si el tipo de los demás elementos es diferenete a Numero Entero, se marca un error
-            if (strcmp(TipoPrincipal,Tipo)!=0)
+            if (strcmp(Tipo,"NumE")==0)
             {
-                Error = true;
-                break;
+                Index = Index + 2;
             }
-            Index ++;  
+            else
+            {
+                Error = -1;
+                break;
+            } 
 
         }   
         /*  Si Error es verdadero, significa que hay un error de tipos de datos en la operacion
             recordando que no se permite el estrechamiento de datos, es decir, no se puede
             asignar un valor decimal a una variable entera.
         */
-        if (Error == true)
+        if (Error == -1)
         {
-            printf("Error: Los tipos de datos de la operacion no son validos.\n");
+            printf("\nError: Los tipos de datos de la operacion no son validos.\n");
             printf("No se permite el estrechamiento de tipos de datos.\n");
+            printf("_________________________________________\n\n");
             return 0;
         }
         //Si Error no es verdadero, entonces se sabe que los tipos de datos son adecuados para operar
@@ -187,6 +192,10 @@ void AsignarValores()
     int Index = 3;
     int Longitud = LongitudTS();
     aux = ini;
+    if (aux != NULL)
+    {
+        strcpy(aux -> ValorId,"");
+    }
 
     while(aux != NULL)
     {
@@ -194,21 +203,30 @@ void AsignarValores()
         if(aux -> index == Index)
         {
             //Si se trata de un ID, se pregunta el valor del ID
-            if (strcmp(aux -> TipTok,"ID") == 0)
+            if (strcmp(aux -> TipTok,"ID")==0)
             {
-                printf("Ingrese el valor del identificador '%s': ", aux -> Lexema);
+                printf("\nIngrese el valor del identificador '%s': ", aux -> Lexema);
                 fflush(stdin);
-                scanf("%s", aux -> ValorId);
+                scanf("%s",&aux->ValorId);
+                printf("Valor asignado: %s\n", aux->ValorId);
                 Index += 1;
+                //avanza al siguiente elemento 
+                aux = aux->Sig;   
             }
             //Si no es un ID, se copia el lexema, asumiendo que es un Entero o un Decimal
+            else if(strcmp(aux -> TipTok,"NE")==0 || strcmp(aux -> TipTok,"ND")==0)
+            {
+                strcpy(aux->ValorId, aux->Lexema);
+                Index += 1;
+                //avanza al siguiente elemento 
+                aux = aux->Sig;   
+            }
             else
             {
-                strcpy(aux -> ValorId, aux -> Lexema);
+                strcpy(aux -> ValorId, "");
                 Index += 1;
-            }
-            //avanza al siguiente elemento 
-            aux = aux->Sig;            
+                aux = aux->Sig;
+            }         
         }
         else
         {

@@ -5,7 +5,13 @@
 #include "AnalisisSintactico.h"
 #include "AnalisisSemantico.h"
 
-void VerificarStatus(int);
+void VerificarStatus(int bandera)
+{
+	if (bandera == 0)
+	{
+		exit(EXIT_FAILURE);
+	}
+}
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +25,7 @@ int main(int argc, char *argv[])
 	gets(Cadena);
 	LeerCadena(Cadena);
 	bandera = Analizar();
-	verificarStatus(bandera);
+	VerificarStatus(bandera);
 
 	//Mostrar trabla de simbolos
 	printf("\n");
@@ -38,6 +44,11 @@ int main(int argc, char *argv[])
 
 	//Asignacion de valores en los IDs
 	AsignarValores();
+	printf("\n");
+
+	//mostrar tabla de simbolos completa
+	printf("\n");
+	ImprimirCompleta();
 
 /*
 	do
@@ -88,10 +99,3 @@ int main(int argc, char *argv[])
 }
 
 //funcion que verifica el estado de la bandera para saber si ha habido errores
-void VerificarStatus(int bandera)
-{
-	if (bandera == 0)
-	{
-		exit(EXIT_FAILURE);
-	}
-}

@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "tabladesimbolos.h": "c"
+        "tabladesimbolos.h": "c",
+        "analisissemantico.h": "c"
     }
 }

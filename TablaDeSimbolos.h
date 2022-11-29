@@ -23,8 +23,8 @@ struct TS
 	char Lexema [20];
 	char TipTok [3];
 	int Indice;
-	char TipoId [4];
-	char ValorId[5];
+	char TipoId [8];
+	char ValorId[10];
 	int index;
 	struct TS *Sig;
 };
@@ -83,7 +83,7 @@ void Imprimir()
 				printf("%s",aux->Lexema);
 				printf(" \t\t|%s",aux->TipTok);
 				printf(" \t\t|%d\n",aux->Indice);
-			aux = aux->Sig;
+				aux = aux->Sig;
 			}
 			else
 			{
@@ -97,6 +97,46 @@ void Imprimir()
 	}
 	printf("\n");
 }
+//**********************************************
+//FUNCIÓN QUE IMPRIME LA TABLA DE SIMBOLOS COMPLETA
+void ImprimirCompleta()
+{
+	aux = ini;
+	if (ini == NULL)
+	{
+		printf("\n-------NO EXISTEN ELEMENTOS EN LA TABLA DE SIMBOLOS------\n\n");		
+	}
+	else
+	{
+		printf("\n\t------TABLA DE SIMBOLOS------\n");
+		printf("\nLexema\t\t|TipTok\t\t|Indice\t\t|TipoDato\t|Valor\n");
+		printf("_____________________________________________________________________________\n");
+		while(aux != NULL)
+		{
+			if (strlen(aux->Lexema)<=6)
+			{
+				printf("%s",aux->Lexema);
+				printf(" \t\t|%s",aux->TipTok);
+				printf(" \t\t|%d",aux->Indice);
+				printf(" \t\t|%s",aux->TipoId);
+				printf(" \t\t|%s\n",aux->ValorId);
+				aux = aux->Sig;
+			}
+			else
+			{
+				printf("%s",aux->Lexema);
+				printf(" \t|%s",aux->TipTok);
+				printf(" \t\t|%d",aux->Indice);
+				printf(" \t\t|%s",aux->TipoId);
+				printf(" \t\t|%s\n",aux->ValorId);
+				aux = aux->Sig;
+			}
+		}
+	}
+	printf("\n");
+}
+//**********************************************
+
 
 //fUNCIÓN PARA CONSULTAR LA LONGITUD DE LA TABLA DE SIMBOLOS
 int LongitudTS()
