@@ -5,11 +5,41 @@
 #include "AnalisisSintactico.h"
 #include "AnalisisSemantico.h"
 
+void VerificarStatus(int);
+
 int main(int argc, char *argv[])
 {
 	int op = 0, bandera = 0;
 	char Cadena[50];
 
+	//Despliegue de opciones
+	printf("\tCALCULADORA COMPILADA \n");
+	printf("Escriba la cadena: ");
+	fflush(stdin);
+	gets(Cadena);
+	LeerCadena(Cadena);
+	bandera = Analizar();
+	verificarStatus(bandera);
+
+	//Mostrar trabla de simbolos
+	printf("\n");
+	Imprimir();
+
+	//Verificar gramática
+	bandera = GIC_OperacionesAritmeticas();
+	VerificarStatus(bandera);
+
+	//Ingreso de tipos de datos para los IDs
+	TipoDatoId();
+
+	//Verificacion de tipos de datos asignados
+	bandera = VerificarTipos();
+	VerificarStatus(bandera);
+
+	//Asignacion de valores en los IDs
+	AsignarValores();
+
+/*
 	do
 	{
 		printf("\t------MENU DE OPCIONES------\n\n");
@@ -54,4 +84,14 @@ int main(int argc, char *argv[])
 				break;
 		}
 	} while (op!=7 && bandera != 0);
+	*/
+}
+
+//funcion que verifica el estado de la bandera para saber si ha habido errores
+void VerificarStatus(int bandera)
+{
+	if (bandera == 0)
+	{
+		exit(EXIT_FAILURE);
+	}
 }
