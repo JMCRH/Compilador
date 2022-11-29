@@ -27,10 +27,11 @@ struct TS
 	char ValorId[10];
 	int index;
 	struct TS *Sig;
+	struct TS *Ant;
 };
 
 //INICIALIZAR LA ESTRUCTURA
-struct TS *ini = NULL, *fin = NULL, *aux = NULL;
+struct TS *ini = NULL, *fin = NULL, *aux = NULL, *aux2 = NULL;
 int indexNum = 1;
 
 
@@ -46,6 +47,7 @@ void AgregarSimTS(char Lex[20], char Tip[3], int num)
 		ini ->Indice = num;
 		ini -> index = indexNum;
 		ini -> Sig = NULL;
+		ini -> Ant = NULL;
 		fin = ini;
 	}
 	else
@@ -57,6 +59,7 @@ void AgregarSimTS(char Lex[20], char Tip[3], int num)
 		aux -> Indice = num;
 		aux -> index = indexNum;
 		aux -> Sig = NULL;
+		aux -> Ant = fin;
 		fin -> Sig = aux;
 		fin = aux;
 	}

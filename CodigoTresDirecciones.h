@@ -12,7 +12,12 @@
 #include "TablaDeSimbolos.h"
 
 //Funciones prototipo
-void generarCodigoTresDirecciones();
+int generarCodigoTresDirecciones();
+void prioridad1(int) ;
+void priodirdad2(int);
+
+//variable global
+int nTemp = 0;
 
 struct Temporales
 {
@@ -21,6 +26,22 @@ struct Temporales
     char Operando2[5];
     char Operador[3];
 };
+
+int generarCodigoTresDirecciones()
+{
+
+
+}
+
+void prioridad1(int nTemp)
+{
+
+}
+
+void prioridad2(int nTemp)
+{
+
+}
 
 
 #endif // CODIGO_TRES_DIRECCIONES_H

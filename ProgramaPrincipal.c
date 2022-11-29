@@ -15,6 +15,7 @@ void VerificarStatus(int bandera)
 
 int main(int argc, char *argv[])
 {
+	system("cls");
 	int op = 0, bandera = 0;
 	int nTemp = 1;
 	char Cadena[50];
