@@ -221,6 +221,12 @@ void AsignarValores()
                 //avanza al siguiente elemento 
                 aux = aux->Sig;   
             }
+            else if(strcmp(aux->TipTok,"AS")==0)
+            {
+                strcpy(aux->ValorId, "");
+                Index += 1;
+                aux = aux->Sig;
+            }
             else
             {
                 strcpy(aux -> ValorId, "");
