@@ -19,6 +19,7 @@ void prioridad2();
 //variable global
 int nTemp = 1;
 char TempText[5] = "T";
+char Num[3];
 
 struct Temporales
 {
@@ -72,7 +73,6 @@ void prioridad1()
 {
     printf("Entrando a prioridad 1\n");
     aux = ini;
-    char texto[5];
     char Notacion [20];
     char Operando1[10];
     char Operando2[10];
@@ -86,11 +86,14 @@ void prioridad1()
             strcpy(Operando1,aux->Ant->ValorId);
             strcpy(Operando2,aux->Sig->ValorId);
             strcpy(Operador,aux->Lexema);
-            
             strcpy(Notacion,Operando1);
             strcat(Notacion,Operando2);
             strcat(Notacion,Operador);
-            printf("%s%i ->",TempText,nTemp);
+            //Identificador de temporales
+            itoa(nTemp,Num,10);
+            strcpy(TempText,"T");
+            strcat(TempText,Num);
+            printf("%s -> ",TempText);
             printf("%s\n",Notacion);
             //Se guardan los valores en la estructura de los temporales
             CrearTemporal(Operando1,Operando2,Operador,Notacion,nTemp);
@@ -114,6 +117,7 @@ void prioridad1()
                 aux->Sig=NULL;
                 fin=aux;
             }
+            
             strcpy(aux->ValorId,TempText);
             nTemp++;
         }
@@ -125,7 +129,6 @@ void prioridad2()
 {
     printf("Entrando a prioridad 2\n");
     aux = ini;
-    char texto[5];
     char Notacion [20];
     char Operando1[5];
     char Operando2[5];
@@ -134,12 +137,18 @@ void prioridad2()
     {
         if (strcmp(aux->Lexema,"+")==0 || strcmp(aux->Lexema,"-")==0)
         {
+            printf("Encontrado operador de prioridad 1\n");
             strcpy(Operando1,aux->Ant->ValorId);
             strcpy(Operando2,aux->Sig->ValorId);
             strcpy(Operador,aux->Lexema);
-            //Se crea la notacion posfija
-            strcpy(Notacion,strcat(strcat(Operando1,Operando2),Operador));
-            printf("%s%i ->",TempText,nTemp);
+            strcpy(Notacion,Operando1);
+            strcat(Notacion,Operando2);
+            strcat(Notacion,Operador);
+            //Identificador de temporales
+            itoa(nTemp,Num,10);
+            strcpy(TempText,"T");
+            strcat(TempText,Num);
+            printf("%s -> ",TempText);
             printf("%s\n",Notacion);
             //Se guardan los valores en la estructura de los temporales
             CrearTemporal(Operando1,Operando2,Operador,Notacion,nTemp);

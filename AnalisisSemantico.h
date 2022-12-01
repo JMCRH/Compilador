@@ -229,7 +229,7 @@ void AsignarValores()
             }
             else
             {
-                strcpy(aux -> ValorId, "");
+                strcpy(aux->ValorId, "");
                 Index += 1;
                 aux = aux->Sig;
             }         
