@@ -47,6 +47,28 @@ void CrearTemporal(char OP1[5], char OP2[5],char OP[3] ,char Notacion[20],int nT
         strcpy(inicio->NotacionPosfija,Notacion);
         inicio->siguiente = NULL;
         final = inicio;
+        if(strcmp(inicio->Operador,"*")==0)
+        {
+        	strcpy(inicio->TipoOperacion,"MUL");
+		}
+		else if(strcmp(inicio->Operador,"/")==0)
+		{
+			strcpy(inicio->TipoOperacion,"DIV")
+		}
+		else if(strcmp(inicio->Operador,"+")==0)
+		{
+			strcpy(inicio->TipoOperacion,"ADD")
+		}
+		else if(strcmp(inicio->Operador,"-")==0)
+		{
+			strcpy(inicio->TipoOperacion,"SUB")
+		}
+		else
+		{
+			printf("\n OCURRIÓ UN ERROR EN LA CREACION DEL TEMPORAL\n");
+		}
+    }
+    }
     }
     else
     {
@@ -58,7 +80,27 @@ void CrearTemporal(char OP1[5], char OP2[5],char OP[3] ,char Notacion[20],int nT
         strcpy(TempAux->NotacionPosfija,Notacion);
         TempAux->siguiente = NULL;
         final = TempAux;
-    }
+        if(strcmp(TempAux->Operador,"*")==0)
+        {
+        	strcpy(TempAux->TipoOperacion,"MUL");
+		}
+		else if(strcmp(TempAux->Operador,"/")==0)
+		{
+			strcpy(TempAux->TipoOperacion,"DIV")
+		}
+		else if(strcmp(TempAux->Operador,"+")==0)
+		{
+			strcpy(TempAux->TipoOperacion,"ADD")
+		}
+		else if(strcmp(TempAux->Operador,"-")==0)
+		{
+			strcpy(TempAux->TipoOperacion,"SUB")
+		}
+		else
+		{
+			printf("\n OCURRIÓ UN ERROR EN LA CREACION DEL TEMPORAL\n");
+		}
+    } 
 }
 
 
@@ -68,7 +110,7 @@ int generarCodigoTresDirecciones()
     prioridad2();
 }
 
-
+//FUNCION QUE REALIZA LA BUSQUEDA DE OPERADORES DE PRIMER NIVEL
 void prioridad1()
 {
     printf("Entrando a prioridad 1\n");
@@ -83,6 +125,7 @@ void prioridad1()
         if(strcmp(aux->Lexema,"*")==0 || strcmp(aux->Lexema,"/")==0)
         {
             printf("Encontrado operador de prioridad 1\n");
+            //Copia los datos de la operacion (operandos y operador)
             strcpy(Operando1,aux->Ant->ValorId);
             strcpy(Operando2,aux->Sig->ValorId);
             strcpy(Operador,aux->Lexema);
@@ -125,6 +168,7 @@ void prioridad1()
     }
 }
 
+//FUNCION QUE REALIZA LA BUSQUEDA DE OPERADORES DE SEGUNDO NIVEL (+,-)
 void prioridad2()
 {
     printf("Entrando a prioridad 2\n");
@@ -138,6 +182,7 @@ void prioridad2()
         if (strcmp(aux->Lexema,"+")==0 || strcmp(aux->Lexema,"-")==0)
         {
             printf("Encontrado operador de prioridad 1\n");
+            //Copia los datos de la operacion (operandos y operador)
             strcpy(Operando1,aux->Ant->ValorId);
             strcpy(Operando2,aux->Sig->ValorId);
             strcpy(Operador,aux->Lexema);
@@ -179,6 +224,32 @@ void prioridad2()
     }
     
 }
+
+//Función para Consultar el temporal
+void ConsultaTemporal(Temporales *AuxT, int Index)
+{
+	int bandera = 0;
+	TempAux = inicio;
+	while(TempAux !=NULL)
+	{
+		if(TempAux->nTemporal == Index)
+		{
+			AuxT = TempAux;
+			bandera = 1;
+			break;
+		}
+		else
+		{
+			TempAux = TempAux->siguiente;
+		}
+	}
+	if(bandera == 0)
+	{
+		printf("El Indice no se encuentra\n");
+	}
+	
+}
+
 
 
 #endif // CODIGO_TRES_DIRECCIONES_H

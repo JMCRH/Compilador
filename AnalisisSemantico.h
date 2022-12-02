@@ -189,7 +189,7 @@ int VerificarTipos()
 //FUNCIÓN QUE SOLICITA EL VALOR DE LOS IDENTIFICADORES
 void AsignarValores()
 {
-    int Index = 3;
+    int Index = 2;
     int Longitud = LongitudTS();
     aux = ini;
     if (aux != NULL)
@@ -214,22 +214,16 @@ void AsignarValores()
                 aux = aux->Sig;   
             }
             //Si no es un ID, se copia el lexema, asumiendo que es un Entero o un Decimal
-            else if(strcmp(aux -> TipTok,"NE")==0 || strcmp(aux -> TipTok,"ND")==0)
+            else if(strcmp(aux->TipTok,"NE")==0 || strcmp(aux->TipTok,"ND")==0)
             {
                 strcpy(aux->ValorId, aux->Lexema);
                 Index += 1;
                 //avanza al siguiente elemento 
                 aux = aux->Sig;   
             }
-            else if(strcmp(aux->TipTok,"AS")==0)
-            {
-                strcpy(aux->ValorId, "");
-                Index += 1;
-                aux = aux->Sig;
-            }
             else
             {
-                strcpy(aux->ValorId, "");
+                strcpy(aux->ValorId, " ");
                 Index += 1;
                 aux = aux->Sig;
             }         

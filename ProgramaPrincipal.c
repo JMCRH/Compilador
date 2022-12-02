@@ -5,6 +5,7 @@
 #include "AnalisisSintactico.h"
 #include "AnalisisSemantico.h"
 #include "CodigoTresDirecciones.h"
+#include "LenguajeDeBajoNivel.h"
 
 void VerificarStatus(int bandera)
 {
@@ -56,6 +57,11 @@ int main(int argc, char *argv[])
 	//Gerenar codigo intermedio
 	printf("\n");
 	generarCodigoTresDirecciones();
+	system("pause");
+	
+	//Se genera el archivo ASM
+	CrearArchivoASM();
+	printf("Compilador.asm creado exitosamente. \n");
 	system("pause");
 	return 0;
 }
