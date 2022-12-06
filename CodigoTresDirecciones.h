@@ -75,16 +75,17 @@ void VerTemporales()
     }
     else
     {
-        printf("\t****TABLA DE TEMPORALES****\n");
-        printf("No. Temporal\t|Operando 1\t|Operando 2\t|Operador\t|Notacion Posfija\n");
-        printf("___________________________________________________________________________________\n");
+        printf("\n\t------TABLA DE TEMPORALES------\n");
+        printf("No. Temporal\t|Operando 1\t|Operando 2\t|Operador\t|Notacion Posfija |Operacion\n");
+        printf("_____________________________________________________________________________________________\n");
         while (TempAux != NULL)
         {
             printf("%d\t\t|",TempAux->nTemporal);
             printf("%s\t\t|",TempAux->Operando1);
             printf("%s\t\t|",TempAux->Operando2);
             printf("%s\t\t|",TempAux->Operador);
-            printf("%s\t\t\n",TempAux->NotacionPosfija);
+            printf("%s\t\t  |",TempAux->NotacionPosfija);
+            printf("%s\t\t\n",TempAux->TipoOperacion);
 
             //printf("%d\t\t%s\t\t%s\t\t%s\t\t%s\n",TempAux->nTemporal,TempAux->Operando1,TempAux->Operando2,TempAux->Operador,TempAux->NotacionPosfija);
             TempAux = TempAux->siguiente;
@@ -93,13 +94,53 @@ void VerTemporales()
     }
 }
 
+//FUNCIÓN QUE IDENTIFICA EL TIPO DE OPERACIÓN
+void IdentificarOperacion()
+{
+    TempAux = inicio;
+    //Mientras no se llegue al final de la tabla de temporales hacer...
+    while (TempAux != NULL)
+    {
+        /*Se busca el tipo de operador que tiene el temporal y se 
+            asigan el tipo de operación correspondiente*/
+        if(strcmp(TempAux->Operador,"*")==0)
+        {
+            strcpy(TempAux->TipoOperacion,"MUL");
+            TempAux = TempAux->siguiente;
+        }
+        else if (strcmp(TempAux->Operador,"/")==0)
+        {
+            strcpy(TempAux->TipoOperacion,"DIV");
+            TempAux = TempAux->siguiente;
+        }
+        else if (strcmp(TempAux->Operador,"+")==0)
+        {
+            strcpy(TempAux->TipoOperacion,"ADD");
+            TempAux = TempAux->siguiente;
+        }
+        else if (strcmp(TempAux->Operador,"-")==0)
+        {
+            strcpy(TempAux->TipoOperacion,"SUB");
+            TempAux = TempAux->siguiente;
+        }
+        else
+        {
+            printf("OCURRIÓ UN ERROR\n");
+            break;
+        }
+    }
+    
+    
+}
 
 
+//FUNCIÓN QUE REALIZA LAS LLAMADAS A LAS FUNCIONES NECESARIAS PARA CREAR LOS TEMPORALES
 int generarCodigoTresDirecciones()
 {
     printf("GENERANDO TEMPORALES...\n");
     prioridad1();
     prioridad2();
+    IdentificarOperacion();
     VerTemporales();
 }
 
