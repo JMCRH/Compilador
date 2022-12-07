@@ -8,6 +8,10 @@
 
 //Funciones prototipo
 void Encabezado();
+void MUL();
+void DIV();
+void ADD();
+void SUB();
 void CopiaTemporal(struct Temporales *, int);
 
 //Variables globales
@@ -27,14 +31,194 @@ void CrearArchivoASM()
 
     Encabezado();
     //ConsultaTemporal(Aux,Index);
-    if(strcmp(Aux->TipoOperacion,"ADD")==0)
-    {
-    	//Suma();
+    TempAux = inicio;
+	
+	while (TempAux != NULL)
+	{		
+		//Duplica el temporal en una variable global
+		Aux = TempAux;
+		//Si el tipo de operación es una multiplicacion...
+		if(strcmp(TempAux->TipoOperacion,"MUL")==0)
+		{
+			printf("Multiplicacion\n");
+			//Llama a la función que carga una multiplicación en el ASM
+			MUL();
+			TempAux = TempAux->siguiente;
+		}
+		else if(strcmp(TempAux->TipoOperacion,"DIV")==0)
+		{
+			printf("Division\n");
+			//Llama a a la función que carga una división en el ASM
+			DIV();
+			TempAux = TempAux->siguiente;
+		}
+		else if(strcmp(TempAux->TipoOperacion,"ADD")==0)
+		{
+			printf("Suma\n");
+			//Llama a la función que carga una suma en el ASM
+			ADD();
+			TempAux = TempAux->siguiente;
+		}
+		else if(strcmp(TempAux->TipoOperacion,"SUB")==0)
+		{
+			printf("Resta\n");
+			//Llama a la función que carga una resta en el ASM
+			SUB();
+			TempAux = TempAux->siguiente;
+		}
 	}
-    
+	//Abriri el archivo ASM en modo de "Escritura y Adición"
+	ASM = fopen(NombreArchivo,"a");
+	//Carga la intruccion de cierre
+	fprintf(ASM,".exit");
+	//cerrar el archivo ASM
+	fclose(ASM);
+	//Muestra un mensaje de confirmación
+	printf("\nArchivo ** %s **  creado con exito\n\n",NombreArchivo);
+}
+//FUNCIÓN QUE CARGA LOS VALORES Y LA OPERACIÓN DE MULTIPLICACIÓN EN EL ARCHIVO *.ASM
+void MUL()
+{
+	//Abriri el archivo ASM en modo de "Escritura y Adición"
+	ASM = fopen(NombreArchivo,"a");
+	//Si el primer operando es un temporal...
+	if(Aux->Operando1[0] == 'T')
+	{
+		//Utiliza el temporal como primer operando (en el asm llevará el número de resultado)
+		fprintf(ASM,"MOV AX, r%s",Aux->Operando1[1]);
+	}
+	else
+	{
+		//Si no, utiliza el valor del primer operando
+		fprintf(ASM,"MOV AX, %s",Aux->Operando1);
+	}
+	//Si el segundo operando es un temporal...
+	if(Aux->Operando2[0] == 'T')
+	{
+		//Utiliza el temporal como segundo operando (en el asm llevará el número de resultado)
+		fprintf(ASM,"MOV BX, r%s",Aux->Operando2[1]);
+	}
+	else
+	{
+		//Si no, utiliza el valor del segundo operando
+		fprintf(ASM,"MOV BX, %s",Aux->Operando2);
+	}
+	//Realiza la multiplicación
+	//Abre la plantilla de multiplicación
+
+	//Cerrar el archivo ASM
+	fclose(ASM);
+}
+
+//FUNCIÓN QUE CARGA LOS VALORES Y LA OPERACIÓN DE DIVISIÓN EN EL ARCHIVO *.ASM
+void DIV()
+{
+	//Abriri el archivo ASM en modo de "Escritura y Adición"
+	ASM = fopen(NombreArchivo,"a");
+	//Si el primer operando es un temporal...
+	if(Aux->Operando1[0] == 'T')
+	{
+		//Utiliza el temporal como primer operando (en el asm llevará el número de resultado)
+		fprintf(ASM,"MOV AX, r%s",Aux->Operando1[1]);
+	}
+	else
+	{
+		//Si no, utiliza el valor del primer operando
+		fprintf(ASM,"MOV AX, %s",Aux->Operando1);
+	}
+	
+	//Si el segundo operando es un temporal...
+	if(Aux->Operando2[0] == 'T')
+	{
+		//Utiliza el temporal como segundo operando (en el asm llevará el número de resultado)
+		fprintf(ASM,"MOV BX, r%s",Aux->Operando2[1]);
+	}
+	else
+	{
+		//Si no, utiliza el valor del segundo operando
+		fprintf(ASM,"MOV BX, %s",Aux->Operando2);
+	}
+	//Realiza la división
+	//Abre la plantilla de división
+
+	//Cerrar el archivo ASM
+	fclose(ASM);
+}
+
+//FUNCIÓN QUE CARGA LOS VALORES Y LA OPERACIÓN DE SUMA EN EL ARCHIVO *.ASM
+void ADD()
+{
+	//Abriri el archivo ASM en modo de "Escritura y Adición"
+	ASM = fopen(NombreArchivo,"a");
+	//Si el primer operando es un temporal...
+	if(Aux->Operando1[0] == 'T')
+	{
+		//Utiliza el temporal como primer operando (en el asm llevará el número de resultado)
+		fprintf(ASM,"MOV AX, r%s",Aux->Operando1[1]);
+	}
+	else
+	{
+		//Si no, utiliza el valor del primer operando
+		fprintf(ASM,"MOV AX, %s",Aux->Operando1);
+	}
+
+	//Si el segundo operando es un temporal...
+	if(Aux->Operando2[0] == 'T')
+	{
+		//Utiliza el temporal como segundo operando (en el asm llevará el número de resultado)
+		fprintf(ASM,"MOV BX, r%s",Aux->Operando2[1]);
+	}
+	else
+	{
+		//Si no, utiliza el valor del segundo operando
+		fprintf(ASM,"MOV BX, %s",Aux->Operando2);
+	}
+
+	//Realiza la suma
+	//Abre la plantilla de suma
+
+	//Cerrar el archivo ASM
+	fclose(ASM);
+}
+
+//FUNCIÓN QUE CARGA LOS VALORES Y LA OPERACIÓN DE RESTA EN EL ARCHIVO *.ASM
+void SUB()
+{
+	//Abriri el archivo ASM en modo de "Escritura y Adición"
+	ASM = fopen(NombreArchivo,"a");
+	//Si el primer operando es un temporal...
+	if(Aux->Operando1[0] == 'T')
+	{
+		//Utiliza el temporal como primer operando (en el asm llevará el número de resultado)
+		fprintf(ASM,"\nMOV AX, r%s\n",Aux->Operando1[1]);
+	}
+	else
+	{
+		//Si no, utiliza el valor del primer operando
+		fprintf(ASM,"MOV AX, %s",Aux->Operando1);
+	}
+
+	//Si el segundo operando es un temporal...
+	if(Aux->Operando2[0] == 'T')
+	{
+		//Utiliza el temporal como segundo operando (en el asm llevará el número de resultado)
+		fprintf(ASM,"MOV BX, r%s",Aux->Operando2[1]);
+	}
+	else
+	{
+		//Si no, utiliza el valor del segundo operando
+		fprintf(ASM,"MOV BX, %s",Aux->Operando2);
+	}
+
+	//Realiza la resta
+	//Abre la plantilla de resta
+
+	//Cerrar el archivo ASM
+	fclose(ASM);
 }
 
 
+//FUNCIÓN QUE CARGA EL ENCABEZADO DEL PROGRAMA EN EL ARCHIVO *.ASM
 void Encabezado()
 {
 	//Puntero para abriri el archivo de encabezado
@@ -58,10 +242,10 @@ void Encabezado()
 		fgets(DatosLeidos,200,INI_ASM);
 		fprintf(ASM,DatosLeidos);
 	}
-	
-	printf("Datos coopiados aducuadamente\n");
-	fclose(ASM);
 	fclose(INI_ASM);
+	//Cierra el archivo ASM
+	fclose(ASM);
+	printf("Datos copiados aducuadamente\n");
 }
 
 void CopiaTemporal(struct Temporales *Aux, int Index)
