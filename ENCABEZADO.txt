@@ -1,13 +1,5 @@
 .model small
 .data
-n1 db 0 
-n2 db 0
-n3 db 0 
-n4 db 0
-n5 db 0
-n6 db 0
-n7 db 0
-n8 db 0
 
 r1 db 0
 r2 db 0
@@ -15,9 +7,10 @@ r3 db 0
 r4 db 0
 r5 db 0
 r6 db 0
-r7 db 0 
+r7 db 0
+r8 db 0
+r9 db 0
+r10 db 0 
 resi db 0 
-
-nb2 db ',','$' 
-
-R db 10,13,'.','$'
+.stack
+.code

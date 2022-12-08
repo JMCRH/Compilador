@@ -12,20 +12,19 @@ void MUL();
 void DIV();
 void ADD();
 void SUB();
-void CopiaTemporal(struct Temporales *, int);
+int buscarT1();
+int buscarT2();
 
 //Variables globales
 const char* NombreArchivo = "Compilador.asm";
 FILE *ASM;
+int NumDeTemp;
 //Se crear una variable del tipo Temporal como auxiliar
-struct Temporales *Aux = NULL;
+struct Temporales *Aux;
 
 //FUNCIÓN QUE CREA EL ARCHIVO *.ASM
 void CrearArchivoASM()
 {
-	int Index = 1;
-	int Longitud = nTemp;
-
     //Crear el archivo ASM con el nombre "Compilador.asm" en modo escritura
     ASM = fopen(NombreArchivo,"w");
 
@@ -70,7 +69,7 @@ void CrearArchivoASM()
 	//Abriri el archivo ASM en modo de "Escritura y Adición"
 	ASM = fopen(NombreArchivo,"a");
 	//Carga la intruccion de cierre
-	fprintf(ASM,".exit");
+	fprintf(ASM,"\n.exit");
 	//cerrar el archivo ASM
 	fclose(ASM);
 	//Muestra un mensaje de confirmación
@@ -81,31 +80,32 @@ void MUL()
 {
 	//Abriri el archivo ASM en modo de "Escritura y Adición"
 	ASM = fopen(NombreArchivo,"a");
+	fprintf(ASM,"\n;MULTIPLICACION\n");
 	//Si el primer operando es un temporal...
-	if(Aux->Operando1[0] == 'T')
+	if(buscarT1()==0)
 	{
 		//Utiliza el temporal como primer operando (en el asm llevará el número de resultado)
-		fprintf(ASM,"MOV AX, r%s",Aux->Operando1[1]);
+		fprintf(ASM,"MOV AL, r%i\n",NumDeTemp);
 	}
 	else
 	{
 		//Si no, utiliza el valor del primer operando
-		fprintf(ASM,"MOV AX, %s",Aux->Operando1);
+		fprintf(ASM,"MOV AL, %s\n",Aux->Operando1);
 	}
 	//Si el segundo operando es un temporal...
-	if(Aux->Operando2[0] == 'T')
+	if(buscarT2()==0)
 	{
 		//Utiliza el temporal como segundo operando (en el asm llevará el número de resultado)
-		fprintf(ASM,"MOV BX, r%s",Aux->Operando2[1]);
+		fprintf(ASM,"MOV BL, r%i\n",NumDeTemp);
 	}
 	else
 	{
 		//Si no, utiliza el valor del segundo operando
-		fprintf(ASM,"MOV BX, %s",Aux->Operando2);
+		fprintf(ASM,"MOV BX, %s\n",Aux->Operando2);
 	}
 	//Realiza la multiplicación
-	//Abre la plantilla de multiplicación
-
+	fprintf(ASM,"MUL BL\n");
+	fprintf(ASM,"MOV r%d,AL\n",Aux->nTemporal);
 	//Cerrar el archivo ASM
 	fclose(ASM);
 }
@@ -116,31 +116,33 @@ void DIV()
 	//Abriri el archivo ASM en modo de "Escritura y Adición"
 	ASM = fopen(NombreArchivo,"a");
 	//Si el primer operando es un temporal...
-	if(Aux->Operando1[0] == 'T')
+	fprintf(ASM,"\n;DIVISION\n");
+	if(buscarT1()==0)
 	{
 		//Utiliza el temporal como primer operando (en el asm llevará el número de resultado)
-		fprintf(ASM,"MOV AX, r%s",Aux->Operando1[1]);
+		fprintf(ASM,"MOV AL, r%i\n",NumDeTemp);
 	}
 	else
 	{
 		//Si no, utiliza el valor del primer operando
-		fprintf(ASM,"MOV AX, %s",Aux->Operando1);
+		fprintf(ASM,"MOV AL, %s\n",Aux->Operando1);
 	}
 	
 	//Si el segundo operando es un temporal...
-	if(Aux->Operando2[0] == 'T')
+	if(buscarT2()==0)
 	{
 		//Utiliza el temporal como segundo operando (en el asm llevará el número de resultado)
-		fprintf(ASM,"MOV BX, r%s",Aux->Operando2[1]);
+		fprintf(ASM,"MOV BL, r%i\n",NumDeTemp);
 	}
 	else
 	{
 		//Si no, utiliza el valor del segundo operando
-		fprintf(ASM,"MOV BX, %s",Aux->Operando2);
+		fprintf(ASM,"MOV BL, %s\n",Aux->Operando2);
 	}
 	//Realiza la división
 	//Abre la plantilla de división
-
+	fprintf(ASM,"DIV BL\n");
+	fprintf(ASM,"MOV r%d,AL\n",Aux->nTemporal);
 	//Cerrar el archivo ASM
 	fclose(ASM);
 }
@@ -150,33 +152,33 @@ void ADD()
 {
 	//Abriri el archivo ASM en modo de "Escritura y Adición"
 	ASM = fopen(NombreArchivo,"a");
+	fprintf(ASM,"\n;SUMA\n");
 	//Si el primer operando es un temporal...
-	if(Aux->Operando1[0] == 'T')
+	if(buscarT1()==0)
 	{
 		//Utiliza el temporal como primer operando (en el asm llevará el número de resultado)
-		fprintf(ASM,"MOV AX, r%s",Aux->Operando1[1]);
+		fprintf(ASM,"MOV AL, r%i\n",NumDeTemp);
 	}
 	else
 	{
 		//Si no, utiliza el valor del primer operando
-		fprintf(ASM,"MOV AX, %s",Aux->Operando1);
+		fprintf(ASM,"MOV AL, %s\n",Aux->Operando1);
 	}
 
 	//Si el segundo operando es un temporal...
-	if(Aux->Operando2[0] == 'T')
+	if(buscarT2()==0)
 	{
 		//Utiliza el temporal como segundo operando (en el asm llevará el número de resultado)
-		fprintf(ASM,"MOV BX, r%s",Aux->Operando2[1]);
+		fprintf(ASM,"MOV BL, r%i\n",NumDeTemp);
 	}
 	else
 	{
 		//Si no, utiliza el valor del segundo operando
-		fprintf(ASM,"MOV BX, %s",Aux->Operando2);
+		fprintf(ASM,"MOV BL, %s\n",Aux->Operando2);
 	}
-
 	//Realiza la suma
-	//Abre la plantilla de suma
-
+	fprintf(ASM,"ADD AL,BL\n");
+	fprintf(ASM,"MOV r%d,AL\n",Aux->nTemporal);
 	//Cerrar el archivo ASM
 	fclose(ASM);
 }
@@ -186,33 +188,33 @@ void SUB()
 {
 	//Abriri el archivo ASM en modo de "Escritura y Adición"
 	ASM = fopen(NombreArchivo,"a");
+	fprintf(ASM,"\n;RESTA\n");
 	//Si el primer operando es un temporal...
-	if(Aux->Operando1[0] == 'T')
+	if(buscarT1()==0)
 	{
 		//Utiliza el temporal como primer operando (en el asm llevará el número de resultado)
-		fprintf(ASM,"\nMOV AX, r%s\n",Aux->Operando1[1]);
+		fprintf(ASM,"MOV AL, r%i\n",NumDeTemp);
 	}
 	else
 	{
 		//Si no, utiliza el valor del primer operando
-		fprintf(ASM,"MOV AX, %s",Aux->Operando1);
+		fprintf(ASM,"MOV AL, %s\n",Aux->Operando1);
 	}
 
 	//Si el segundo operando es un temporal...
-	if(Aux->Operando2[0] == 'T')
+	if(buscarT2()==0)
 	{
 		//Utiliza el temporal como segundo operando (en el asm llevará el número de resultado)
-		fprintf(ASM,"MOV BX, r%s",Aux->Operando2[1]);
+		fprintf(ASM,"MOV BL, r%i",NumDeTemp);
 	}
 	else
 	{
 		//Si no, utiliza el valor del segundo operando
-		fprintf(ASM,"MOV BX, %s",Aux->Operando2);
+		fprintf(ASM,"MOV BL, %s\n",Aux->Operando2);
 	}
-
 	//Realiza la resta
-	//Abre la plantilla de resta
-
+	fprintf(ASM,"SUB AL,BL\n");
+	fprintf(ASM,"MOV r%d,AL\n",Aux->nTemporal);
 	//Cerrar el archivo ASM
 	fclose(ASM);
 }
@@ -248,19 +250,58 @@ void Encabezado()
 	printf("Datos copiados aducuadamente\n");
 }
 
-void CopiaTemporal(struct Temporales *Aux, int Index)
+//FUNCIÓN QUE BUSCA SI EL PRIMER OPERANDO ES UN TEMPORAL
+int buscarT1()
 {
-    TempAux = inicio;
-	while (TempAux != NULL)
+	int i = 1;
+	int bandera = 0;
+	char cadAux[10] = "T";
+	char Numero[3];
+	for(i = 0; i < nTemp; i++)
 	{
-		if(TempAux->nTemporal == Index)
+		itoa(i,Numero,10);
+		strcat(cadAux,Numero);
+		if (strcmp(cadAux,Aux->Operando1)==0)
 		{
-				Aux = TempAux;
+			NumDeTemp = i;
+			return 0;
 		}
 		else
 		{
-			TempAux = TempAux->siguiente;
+			strcpy(cadAux,"T");
 		}
+	}
+	if (bandera == 1)
+	{
+		return 1;
+	}
+	
+}
+
+//FUNCIÓN QUE BUSCA SI EL SEGUNDO OPERANDO ES UN TEMPORAL
+int buscarT2()
+{
+	int i = 1;
+	int bandera = 0;
+	char cadAux[10] = "T";
+	char Numero[3];
+	for(i = 0; i < nTemp; i++)
+	{
+		itoa(i,Numero,10);
+		strcat(cadAux,Numero);
+		if (strcmp(cadAux,Aux->Operando2)==0)
+		{
+			NumDeTemp = i;
+			return 0;
+		}
+		else
+		{
+			strcpy(cadAux,"T");
+		}
+	}
+	if (bandera == 1)
+	{
+		return 1;
 	}
 }
 
