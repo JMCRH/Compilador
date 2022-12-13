@@ -14,6 +14,8 @@ void ADD();
 void SUB();
 int buscarT1();
 int buscarT2();
+void CadResultado();
+void MostrarResultado();
 
 //Variables globales
 const char* NombreArchivo = "Compilador.asm";
@@ -66,12 +68,18 @@ void CrearArchivoASM()
 			TempAux = TempAux->siguiente;
 		}
 	}
+	//Confirmar que las operaciones se cargaron correctamente
+	printf("\nOperaciones cargadas correctamente\n");
+	//Copia el archivo que muestra una cadena para el resultado
+	CadResultado();
 	//Abriri el archivo ASM en modo de "Escritura y Adición"
 	ASM = fopen(NombreArchivo,"a");
-	//Carga la intruccion de cierre
-	fprintf(ASM,"\n.exit");
+	//Mueve el valor del último resultado generado al registro AL
+	fprintf(ASM,"\nMOV AL, r%i\n",nTemp-1);
 	//cerrar el archivo ASM
 	fclose(ASM);
+	//Copia el archivo para el final del programa
+	MostrarResultado();
 	//Muestra un mensaje de confirmación
 	printf("\nArchivo ** %s **  creado con exito\n\n",NombreArchivo);
 }
@@ -219,37 +227,6 @@ void SUB()
 	fclose(ASM);
 }
 
-
-//FUNCIÓN QUE CARGA EL ENCABEZADO DEL PROGRAMA EN EL ARCHIVO *.ASM
-void Encabezado()
-{
-	//Puntero para abriri el archivo de encabezado
-	FILE *INI_ASM;
-	//Datos que se pueden leer por pasada
-	char DatosLeidos[200]; 
-	int cantidad;
-
-
-	//Abre el archivo que contiene el encabezado en modo lectura
-	INI_ASM = fopen("Encabezado.txt","r");
-	//verifica si el archivo se abre correctamente
-	if(!INI_ASM)
-	{
-		perror("OCURRIO UN ERROR AL ABRIR EL ARCHIVO DEL ENCABEZADO");
-		exit(EXIT_FAILURE);
-	}
-	//Lee el contenido del archivo Encabazado.txt
-	while(feof(INI_ASM) == 0)
-	{
-		fgets(DatosLeidos,200,INI_ASM);
-		fprintf(ASM,DatosLeidos);
-	}
-	fclose(INI_ASM);
-	//Cierra el archivo ASM
-	fclose(ASM);
-	printf("Datos copiados aducuadamente\n");
-}
-
 //FUNCIÓN QUE BUSCA SI EL PRIMER OPERANDO ES UN TEMPORAL
 int buscarT1()
 {
@@ -303,6 +280,100 @@ int buscarT2()
 	{
 		return 1;
 	}
+}
+
+//FUNCIÓN QUE CARGA EL ENCABEZADO DEL PROGRAMA EN EL ARCHIVO *.ASM
+void Encabezado()
+{
+	//Puntero para abriri el archivo de encabezado
+	FILE *INI_ASM;
+	//Datos que se pueden leer por pasada
+	char DatosLeidos[200]; 
+	int cantidad;
+
+
+	//Abre el archivo que contiene el encabezado en modo lectura
+	INI_ASM = fopen("Encabezado.txt","r");
+	//verifica si el archivo se abre correctamente
+	if(!INI_ASM)
+	{
+		perror("OCURRIO UN ERROR AL ABRIR EL ARCHIVO DEL ENCABEZADO");
+		exit(EXIT_FAILURE);
+	}
+	//Lee el contenido del archivo Encabazado.txt
+	while(feof(INI_ASM) == 0)
+	{
+		fgets(DatosLeidos,200,INI_ASM);
+		fprintf(ASM,DatosLeidos);
+	}
+	fclose(INI_ASM);
+	//Cierra el archivo ASM
+	fclose(ASM);
+	printf("\nEncabezado.txt cargado correctamente\n");
+}
+
+//FUNCION QUE COPIA EL ARCHIVO PARA IMPRIMIR LA CADENA DE RESULTADOS
+void CadResultado()
+{
+	//Abrir el archivo ASM en modo de "Escritura y Adición"
+	ASM = fopen(NombreArchivo,"a");
+	//Puntero para abriri el archivo de cadena de resultados
+	FILE *CAD_RESULTADOS;
+	//Datos que se pueden leer por pasada
+	char DatosLeidos[200]; 
+	int cantidad;
+
+	//Abre el archivo que contiene el procedimiento en modo lectura
+	CAD_RESULTADOS = fopen("Cadena.txt","r");
+	//verifica si el archivo se abre correctamente
+	if(!CAD_RESULTADOS)
+	{
+		perror("OCURRIO UN ERROR AL ABRIR EL ARCHIVO DE CADENA DE RESULTADOS");
+		exit(EXIT_FAILURE);
+	}
+	//Lee el contenido del archivo Cadena.txt
+	while(feof(CAD_RESULTADOS) == 0)
+	{
+		fgets(DatosLeidos,200,CAD_RESULTADOS);
+		fprintf(ASM,DatosLeidos);
+	}
+	//cierra el archivo Cadena.txt
+	fclose(CAD_RESULTADOS);
+	//Cierra el archivo ASM
+	fclose(ASM);
+	printf("Cadena.txt cargada correctamente\n");
+}
+
+//FUNCION QUE COPIA EL ARCHIVO QUE MUESTRA EL RESULTADO DE LAS OPERACIONES
+void MostrarResultado()
+{
+	//Abrir el archivo ASM en modo de "Escritura y Adición"
+	ASM = fopen(NombreArchivo,"a");
+	//Puntero para abriri el archivo de impresión de resultados
+	FILE *PRINT;
+	//Datos que se pueden leer por pasada
+	char DatosLeidos[200]; 
+	int cantidad;
+
+	//Abre el archivo que contiene el procedimiento en modo lectura
+	PRINT = fopen("ImprimirEnteros.txt","r");
+	//verifica si el archivo se abre correctamente
+	if(!PRINT)
+	{
+		perror("OCURRIO UN ERROR AL ABRIR EL ARCHIVO DE IMPRESION DE RESULTADOS");
+		exit(EXIT_FAILURE);
+	}
+	//Lee el contenido del archivo ImprimirEnteros.txt
+	while(feof(PRINT) == 0)
+	{
+		fgets(DatosLeidos,200,PRINT);
+		fprintf(ASM,DatosLeidos);
+	}
+	//cierra el archivo ImprimirEnteros.txt
+	fclose(PRINT);
+	//Cierra el archivo ASM
+	fclose(ASM);
+	printf("ImprimirEnteros.txt cargada correctamente\n");
 }
 
 #endif //LENGUAJE_DE_BAJO_NIVEL_H

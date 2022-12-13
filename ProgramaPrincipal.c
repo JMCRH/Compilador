@@ -7,6 +7,7 @@
 #include "CodigoTresDirecciones.h"
 #include "LenguajeDeBajoNivel.h"
 
+//FUNCION QUE VERIFICA SI EL PROGRAMA SE EJECUTA SIN ERRORES
 void VerificarStatus(int bandera)
 {
 	if (bandera == 0)
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
 	
 	//Se genera el archivo ASM
 	CrearArchivoASM();
-	printf("Compilador.asm creado exitosamente. \n");
+	//printf("Compilador.asm creado exitosamente. \n");
 	system("pause");
 	return 0;
 }

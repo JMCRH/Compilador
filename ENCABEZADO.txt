@@ -12,5 +12,11 @@ r8 db 0
 r9 db 0
 r10 db 0 
 resi db 0 
+
+;cadenas:  
+cad2 db 10,13, "Resultado:  $"
+
 .stack
 .code
+;Inicio de la seccion de operaciones
+
