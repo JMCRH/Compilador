@@ -213,7 +213,7 @@ void SUB()
 	if(buscarT2()==0)
 	{
 		//Utiliza el temporal como segundo operando (en el asm llevará el número de resultado)
-		fprintf(ASM,"MOV BL, r%i",NumDeTemp);
+		fprintf(ASM,"MOV BL, r%i\n",NumDeTemp);
 	}
 	else
 	{
